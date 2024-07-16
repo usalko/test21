@@ -34,12 +34,11 @@ WORKDIR $APP_HOME
 
 RUN pip completion --bash >> /home/web/.bashrc \
  && python3 -m venv $VIRTUAL_ENV \
- && pip install --user poetry==1.7.1
+ && pip install -r requirements.txt
 
-COPY --chown=web:web pyproject.toml poetry.lock ./
-RUN poetry install
+COPY --chown=web:web ./
 
-RUN mkdir -p /home/web/stash && cp ./poetry.lock /home/web/stash/poetry.lock
+RUN mkdir -p /home/web/stash 
 COPY --chown=web:web . ./
 RUN cp /home/web/stash/*.* ./
 
@@ -61,7 +60,7 @@ RUN echo 'export LC_ALL=ru_RU.UTF-8' >> /etc/profile.d/locale.sh && \
 ENV LANGUAGE=ru_RU.UTF-8 LANG=ru_RU.UTF-8 LC_ALL=ru_RU.UTF-8
 
 # Dependencies
-RUN apk add --no-cache --update postgresql15-client bash curl pgbouncer
+RUN apk add --no-cache --update postgresql15-client bash curl
 
 RUN adduser -D web
 RUN addgroup web
