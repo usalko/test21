@@ -1,0 +1,6 @@
+pytest
+autopep8
+fastapi[all]
+uvicorn[standard]
+sqlalchemy
+minio
