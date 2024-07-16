@@ -1,28 +1,16 @@
 FROM python:3.12.1-alpine as builder
 
-# RUN apt-get update \
-#  && apt-get install -y --no-install-recommends \
-#     libpq-dev gnupg lsb-release debconf-utils gcc g++ locales \
-#     gir1.2-gobject-2.0 libpango-1.0-0 \
-#     libharfbuzz-dev libpangoft2-1.0-0 \
-#  && apt-get clean \
-#  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-#  && truncate -s 0 /var/log/*log
-
 ENV TZ Europe/Moscow
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone
 
-# RUN echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen \
-#  && locale-gen
 RUN apk add --no-cache --update musl musl-utils musl-locales tzdata
 RUN echo 'export LC_ALL=ru_RU.UTF-8' >> /etc/profile.d/locale.sh && \
   sed -i 's|LANG=C.UTF-8|LANG=ru_RU.UTF-8|' /etc/profile.d/locale.sh
 
 ENV LANGUAGE=ru_RU.UTF-8 LANG=ru_RU.UTF-8 LC_ALL=ru_RU.UTF-8
 
-# poetry package support
-RUN apk add --no-cache --update gcc musl-dev postgresql-dev
+# RUN apk add --no-cache --update gcc musl-dev postgresql-dev
 
 # Docker API Access issue handling
 ARG DOCKER_GID=121
@@ -75,12 +63,8 @@ ENV LANGUAGE=ru_RU.UTF-8 LANG=ru_RU.UTF-8 LC_ALL=ru_RU.UTF-8
 # Dependencies
 RUN apk add --no-cache --update postgresql15-client bash curl pgbouncer
 
-# Docker API Access issue handling #FIXME: ems don't use below line
-ARG DOCKER_GID=121
-# RUN groupadd -g ${DOCKER_GID} docker
-RUN addgroup -g ${DOCKER_GID} docker
 RUN adduser -D web
-RUN addgroup web docker
+RUN addgroup web
 
 USER web
 
