@@ -3,7 +3,7 @@ from unittest import TestCase
 from private_api import private_app
 
 
-class TestrivateAPI(TestCase):
+class TestPrivateAPI(TestCase):
     
     def setUp(self) -> None:
         self.client = TestClient(private_app)
