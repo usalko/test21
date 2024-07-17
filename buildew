@@ -57,12 +57,12 @@ fi
 if [ -f '.env' ]; then
     echo Use .env file to read sensitive information
     while IPS='=' read -r key _; do
-        eval "${key}"
+        eval "export ${key}"
     done <'.env'
 else
     # REGENERATE SENSITIVE INFO FROM TEMPLATE
     cat >'.env' <<EOF
-# PYTHONPATH=
+PYTHONPATH=src
 EOF
 fi
 
@@ -71,6 +71,20 @@ echo "=========== $COMMAND"
 echo "$COMMAND ==========="
 echo COMMAND
 
+
+#========================================== COMMANDS =============================================
+
+if [ "$COMMAND" == "run-public" ]; then
+    echo Run public "$@"
+    # Sample: ./buildew manage loaddata app_moods/fixtures/geometry_shapes.yaml
+    .venv/bin/python3 -m uvicorn public_api:public_app --reload
+fi
+
+if [ "$COMMAND" == "run-private" ]; then
+    echo Run public "$@"
+    # Sample: ./buildew manage loaddata app_moods/fixtures/geometry_shapes.yaml
+    .venv/bin/python3 -m uvicorn private_api:private_app --reload
+fi
 
 #========================================== BASIC TOOLS ===========================================
 
@@ -94,6 +108,6 @@ fi
 
 
 # =================================================================================================
-AVAILABLE_COMMANDS="tests redeps"
+AVAILABLE_COMMANDS="run-public run-private tests redeps"
 echo ''
 [[ $AVAILABLE_COMMANDS =~ (^| )$COMMAND($| ) ]] && echo 'Ok' || (echo 'Unknown command: ' "$COMMAND" && echo 'Available commands are: ' "$AVAILABLE_COMMANDS")

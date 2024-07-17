@@ -36,7 +36,7 @@ RUN pip completion --bash >> /home/web/.bashrc \
  && python3 -m venv $VIRTUAL_ENV \
  && pip install -r requirements.txt
 
-COPY --chown=web:web ./
+COPY --chown=web:web ./src ./
 
 RUN mkdir -p /home/web/stash 
 COPY --chown=web:web . ./

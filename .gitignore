@@ -1,2 +1,10 @@
+# Python local environment
 .pip
 .venv
+.env
+
+# IDE
+.vscode
+
+# Bytecode cache folders
+__pycache__
