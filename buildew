@@ -63,6 +63,9 @@ else
     # REGENERATE SENSITIVE INFO FROM TEMPLATE
     cat >'.env' <<EOF
 PYTHONPATH=src
+S3_SECRET_KEY=Q3AM3UQ867SPQQA43P2F
+S3_ACCESS_KEY=zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG
+S3_BASE_URL=http://s2d3
 EOF
 fi
 
@@ -86,6 +89,8 @@ if [ "$COMMAND" == "run-private" ]; then
     .venv/bin/python3 -m uvicorn private_api:private_app --reload
 fi
 
+
+
 #========================================== BASIC TOOLS ===========================================
 
 if [ "$COMMAND" == "redeps" ]; then
@@ -106,8 +111,16 @@ if [ "$COMMAND" == "tests" ] || [ "$COMMAND" == "test" ]; then
     .venv/bin/python3 -m unittest tests "$@"
 fi
 
+# ======================================= GENERAL INFO ============================================
+if [ "$COMMAND" == "services" ]; then
+    echo There are available services:
+    for SERVICE in "${SERVICES[@]}"; do
+        echo ' - ' $SERVICE
+    done
+fi
+
 
 # =================================================================================================
-AVAILABLE_COMMANDS="run-public run-private tests redeps"
+AVAILABLE_COMMANDS="run-public run-private tests redeps up down"
 echo ''
 [[ $AVAILABLE_COMMANDS =~ (^| )$COMMAND($| ) ]] && echo 'Ok' || (echo 'Unknown command: ' "$COMMAND" && echo 'Available commands are: ' "$AVAILABLE_COMMANDS")

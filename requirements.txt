@@ -3,4 +3,5 @@ autopep8
 fastapi[all]
 uvicorn[standard]
 sqlalchemy
-minio
+fastapi-pagination
+miniopy-async
